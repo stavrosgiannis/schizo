@@ -31,7 +31,7 @@ Public Class Form1
     Private Sub WebBrowser1_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
 
         TextBox1.Text = "READY"
-        Timer1.Start()
+        Timer1.Stop()
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -138,6 +138,8 @@ Public Class Form1
 
             clickOnTeilen()
             runJSTimer.Start()
+            Label3.Text = "10"
+            Timer2.Start()
 
         Else
 
@@ -202,5 +204,14 @@ Public Class Form1
     Private Sub runJSToConfirmTimer_Tick(sender As Object, e As EventArgs) Handles runJSToConfirmTimer.Tick
         runJSToConfirm()
         runJSToConfirmTimer.Stop()
+    End Sub
+
+    Private Sub Timer2_Tick_1(sender As Object, e As EventArgs) Handles Timer2.Tick
+        Label3.Text = Label3.Text - 1
+        If Label3.Text = "1" Then
+            Timer2.Stop()
+            runJSToConfirm()
+            Beep()
+        End If
     End Sub
 End Class
