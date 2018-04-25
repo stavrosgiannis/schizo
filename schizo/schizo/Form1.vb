@@ -139,11 +139,24 @@ Public Class Form1
             clickOnTeilen()
             runJSTimer.Start()
 
-
         Else
 
             MsgBox("Die Seite wurde noch nicht geladen!")
         End If
+    End Sub
+
+    Public Sub runJSToConfirm()
+        Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
+        Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
+        Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
+        element.text = "javascript:var inputs = document.getElementsByClassName('layerConfirm'); 
+                            var rake = inputs[0]; rake.click(); "
+        headElement.AppendChild(scriptElement)
+        WebBrowser1.Document.InvokeScript("sayHello")
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        runJSToConfirm()
     End Sub
 
     Public Sub clickOnTeilen()
@@ -159,6 +172,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        redirectURLTimer.Start()
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 8")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 2")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 1")
@@ -179,5 +193,14 @@ Public Class Form1
 
     Private Sub resetTimer_Tick(sender As Object, e As EventArgs)
 
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+
+    End Sub
+
+    Private Sub runJSToConfirmTimer_Tick(sender As Object, e As EventArgs) Handles runJSToConfirmTimer.Tick
+        runJSToConfirm()
+        runJSToConfirmTimer.Stop()
     End Sub
 End Class

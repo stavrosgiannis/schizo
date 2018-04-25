@@ -35,6 +35,8 @@ Partial Class Form1
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.redirectURLTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.runJSToConfirmTimer = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'WebBrowser1
@@ -133,11 +135,25 @@ Partial Class Form1
         '
         Me.redirectURLTimer.Interval = 2000
         '
+        'Button4
+        '
+        Me.Button4.Location = New System.Drawing.Point(729, 24)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(75, 23)
+        Me.Button4.TabIndex = 10
+        Me.Button4.Text = "Button1"
+        Me.Button4.UseVisualStyleBackColor = True
+        '
+        'runJSToConfirmTimer
+        '
+        Me.runJSToConfirmTimer.Interval = 3000
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1111, 613)
+        Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Button3)
@@ -166,4 +182,6 @@ Partial Class Form1
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents redirectURLTimer As Timer
+    Friend WithEvents Button4 As Button
+    Friend WithEvents runJSToConfirmTimer As Timer
 End Class
