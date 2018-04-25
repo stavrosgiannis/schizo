@@ -116,36 +116,68 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
-        WebBrowser1.Height = Me.Height - 150
+        WebBrowser1.Height = Me.Height - 120
     End Sub
 
     Private Sub WebBrowser1_Navigating(sender As Object, e As WebBrowserNavigatingEventArgs) Handles WebBrowser1.Navigating
         TextBox1.Text = "NOT READY"
     End Sub
 
+    Public Sub runJS()
+        Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
+        Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
+        Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
+        element.text = "javascript:var inputs = document.getElementsByClassName('_1pu2'); 
+                            for(var i=0;i<inputs.length;i++) { inputs[i].click(); }"
+        headElement.AppendChild(scriptElement)
+        WebBrowser1.Document.InvokeScript("sayHello")
+    End Sub
+
     Private Sub InviteBt_Click(sender As Object, e As EventArgs) Handles InviteBt.Click
         If TextBox1.Text = "READY" Then
-            Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
-            Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
-            Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
-            element.text = "javascript:var inputs = document.getElementsByClassName('_1pu2'); 
-                            for(var i=0;i<inputs.length;i++) { inputs[i].click(); }"
-            headElement.AppendChild(scriptElement)
-            WebBrowser1.Document.InvokeScript("sayHello")
+
+            clickOnTeilen()
+            runJSTimer.Start()
+
+
         Else
+
             MsgBox("Die Seite wurde noch nicht geladen!")
         End If
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
+    Public Sub clickOnTeilen()
         WebBrowser1.Document.GetElementById("u_0_11").InvokeMember("click")
-        Threading.Thread.Sleep(500)
+        'Threading.Thread.Sleep(500)
         SendKeys.Send("{ENTER} ")
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Anmelden.Click
+        login_facebook()
+        redirectURLTimer.Start()
 
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        login_facebook()
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 8")
+        System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 2")
+        System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 1")
+        TextBox2.Text = ""
+        TextBox3.Text = ""
+        redirectURLTimer.Start()
+    End Sub
+
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles runJSTimer.Tick
+        runJS()
+        runJSTimer.Stop()
+    End Sub
+
+    Private Sub redirectURLTimer_Tick(sender As Object, e As EventArgs) Handles redirectURLTimer.Tick
+        WebBrowser1.Navigate("https://www.facebook.com/events/225323714695725/")
+        redirectURLTimer.Stop()
+    End Sub
+
+    Private Sub resetTimer_Tick(sender As Object, e As EventArgs)
+
     End Sub
 End Class
