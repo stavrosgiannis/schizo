@@ -23,6 +23,7 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.InviteBt = New System.Windows.Forms.Button()
@@ -35,25 +36,24 @@ Partial Class Form1
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.redirectURLTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.Button4 = New System.Windows.Forms.Button()
         Me.runJSToConfirmTimer = New System.Windows.Forms.Timer(Me.components)
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'WebBrowser1
         '
-        Me.WebBrowser1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.WebBrowser1.Location = New System.Drawing.Point(0, 74)
+        Me.WebBrowser1.Location = New System.Drawing.Point(269, 4)
         Me.WebBrowser1.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Size = New System.Drawing.Size(1111, 539)
+        Me.WebBrowser1.Size = New System.Drawing.Size(812, 552)
         Me.WebBrowser1.TabIndex = 0
-        Me.WebBrowser1.Url = New System.Uri("https://www.facebook.com/events/225323714695725/", System.UriKind.Absolute)
+        Me.WebBrowser1.Visible = False
         '
         'Timer1
         '
-        Me.Timer1.Interval = 2000
         '
         'InviteBt
         '
@@ -80,14 +80,14 @@ Partial Class Form1
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(237, 48)
+        Me.TextBox2.Location = New System.Drawing.Point(12, 87)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(145, 20)
         Me.TextBox2.TabIndex = 4
         '
         'TextBox3
         '
-        Me.TextBox3.Location = New System.Drawing.Point(388, 48)
+        Me.TextBox3.Location = New System.Drawing.Point(12, 129)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TextBox3.Size = New System.Drawing.Size(145, 20)
@@ -119,7 +119,7 @@ Partial Class Form1
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(234, 32)
+        Me.Label1.Location = New System.Drawing.Point(9, 71)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(35, 13)
         Me.Label1.TabIndex = 8
@@ -128,7 +128,7 @@ Partial Class Form1
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(385, 32)
+        Me.Label2.Location = New System.Drawing.Point(9, 113)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(53, 13)
         Me.Label2.TabIndex = 9
@@ -138,15 +138,6 @@ Partial Class Form1
         '
         Me.redirectURLTimer.Interval = 2000
         '
-        'Button4
-        '
-        Me.Button4.Location = New System.Drawing.Point(729, 24)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(75, 23)
-        Me.Button4.TabIndex = 10
-        Me.Button4.Text = "Button1"
-        Me.Button4.UseVisualStyleBackColor = True
-        '
         'runJSToConfirmTimer
         '
         Me.runJSToConfirmTimer.Interval = 3000
@@ -154,7 +145,7 @@ Partial Class Form1
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(585, 24)
+        Me.Label3.Location = New System.Drawing.Point(194, 47)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(19, 13)
         Me.Label3.TabIndex = 11
@@ -164,13 +155,25 @@ Partial Class Form1
         '
         Me.Timer2.Interval = 1000
         '
+        'PictureBox1
+        '
+        Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Right
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(233, 0)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(853, 559)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 12
+        Me.PictureBox1.TabStop = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1111, 613)
+        Me.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.ClientSize = New System.Drawing.Size(1086, 559)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Button3)
@@ -182,6 +185,7 @@ Partial Class Form1
         Me.Controls.Add(Me.WebBrowser1)
         Me.Name = "Form1"
         Me.Text = "Schizo"
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -199,8 +203,8 @@ Partial Class Form1
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents redirectURLTimer As Timer
-    Friend WithEvents Button4 As Button
     Friend WithEvents runJSToConfirmTimer As Timer
     Friend WithEvents Label3 As Label
     Friend WithEvents Timer2 As Timer
+    Friend WithEvents PictureBox1 As PictureBox
 End Class

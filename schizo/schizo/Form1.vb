@@ -1,9 +1,48 @@
 ﻿Imports mshtml
+Imports System.Text
 Public Class Form1
     Dim pswaHeight As Object
     Dim pswaWidth As Object
     Dim pswaHeightInt As Integer
     Dim pswaWidthInt As Integer
+
+#Region "ini. API"
+    ''' <summary>
+    ''' Create a New INI file to store or load data
+    ''' </summary>
+
+    Public _inipath As String = Application.StartupPath & "\config.ini"
+
+    Private Declare Function WritePrivateProfileStringA Lib "kernel32" (ByVal section As String, ByVal key As String, ByVal val As String, ByVal filePath As String) As Long
+
+    Private Declare Function GetPrivateProfileStringA Lib "kernel32" (ByVal section As String, ByVal key As String, ByVal def As String, ByVal retVal As StringBuilder, ByVal size As Integer, ByVal filePath As String) As Integer
+
+    ''' <summary>
+    ''' Write Data to the INI File
+    ''' </summary>
+    ''' <PARAM name="Section"></PARAM>
+    ''' Section name
+    ''' <PARAM name="Key"></PARAM>
+    ''' Key Name
+    ''' <PARAM name="Value"></PARAM>
+    ''' Value Name
+    Public Sub IniWriteValue(ByVal Section As String, ByVal Key As String, ByVal Value As String)
+        WritePrivateProfileStringA(Section, Key, Value, Me._inipath)
+    End Sub
+
+    ''' <summary>
+    ''' Read Data Value From the Ini File
+    ''' </summary>
+    ''' <PARAM name="Section"></PARAM>
+    ''' <PARAM name="Key"></PARAM>
+    ''' <PARAM name="Path"></PARAM>
+    ''' <returns></returns>
+    Public Function IniReadValue(ByVal Section As String, ByVal Key As String) As String
+        Dim temp As StringBuilder = New StringBuilder(255)
+        Dim i As Integer = GetPrivateProfileStringA(Section, Key, "", temp, 255, Me._inipath)
+        Return temp.ToString
+    End Function
+#End Region
 
     Private Enum Exec
         OLECMDID_OPTICAL_ZOOM = 63
@@ -15,11 +54,21 @@ Public Class Form1
         OLECMDEXECOPT_DONTPROMPTUSER = 2
         OLECMDEXECOPT_SHOWHELP = 3
     End Enum
+
+    Dim urlINI As String
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         pswaHeight = Screen.PrimaryScreen.WorkingArea.Height
         pswaWidth = Screen.PrimaryScreen.WorkingArea.Width
         pswaHeightInt = CInt(pswaHeight)
         pswaWidthInt = CInt(pswaWidth)
+
+        If My.Computer.FileSystem.FileExists(Application.StartupPath & "\config.ini") Then
+            urlINI = IniReadValue("EVENTS", "URL")
+            WebBrowser1.Navigate(urlINI)
+        Else
+            Application.Exit()
+        End If
     End Sub
 
     Private Sub login_facebook()
@@ -29,9 +78,9 @@ Public Class Form1
     End Sub
 
     Private Sub WebBrowser1_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
-
+        'Timer1.Start()
         TextBox1.Text = "READY"
-        Timer1.Stop()
+
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -113,9 +162,11 @@ Public Class Form1
                 MsgBox(ex.Message)
             End Try
         End If
+
     End Sub
 
     Private Sub Form1_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
+
         WebBrowser1.Height = Me.Height - 120
     End Sub
 
@@ -157,14 +208,14 @@ Public Class Form1
         WebBrowser1.Document.InvokeScript("sayHello")
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button4.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
         runJSToConfirm()
     End Sub
 
     Public Sub clickOnTeilen()
         WebBrowser1.Document.GetElementById("u_0_11").InvokeMember("click")
         'Threading.Thread.Sleep(500)
-        SendKeys.Send("{ENTER} ")
+        SendKeys.Send("{ENTER}")
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Anmelden.Click
@@ -175,6 +226,7 @@ Public Class Form1
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         redirectURLTimer.Start()
+        Label3.Text = "10"
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 8")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 2")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 1")
@@ -189,15 +241,11 @@ Public Class Form1
     End Sub
 
     Private Sub redirectURLTimer_Tick(sender As Object, e As EventArgs) Handles redirectURLTimer.Tick
-        WebBrowser1.Navigate("https://www.facebook.com/events/225323714695725/")
+        WebBrowser1.Navigate(urlINI)
         redirectURLTimer.Stop()
     End Sub
 
     Private Sub resetTimer_Tick(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
 
     End Sub
 
