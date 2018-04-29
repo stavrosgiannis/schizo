@@ -71,10 +71,15 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub login_facebook()
-        WebBrowser1.Document.GetElementById("Email").SetAttribute("value", TextBox2.Text)
-        WebBrowser1.Document.GetElementById("pass").SetAttribute("value", TextBox3.Text)
-        WebBrowser1.Document.GetElementById("loginbutton").InvokeMember("click")
+    Public Sub login_facebook()
+        If LoginForm1.passwort IsNot Nothing And LoginForm1.benutzername IsNot Nothing Then
+            WebBrowser1.Document.GetElementById("Email").SetAttribute("value", LoginForm1.benutzername)
+            WebBrowser1.Document.GetElementById("pass").SetAttribute("value", LoginForm1.passwort)
+            WebBrowser1.Document.GetElementById("loginbutton").InvokeMember("click")
+        Else
+            MsgBox("Bitte Melde dich erst an! oder drücke RESET", MsgBoxStyle.Information)
+        End If
+
     End Sub
 
     Private Sub WebBrowser1_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
@@ -175,27 +180,47 @@ Public Class Form1
     End Sub
 
     Public Sub runJS()
-        Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
-        Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
-        Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
-        element.text = "javascript:var inputs = document.getElementsByClassName('_1pu2'); 
-                            for(var i=0;i<inputs.length;i++) { inputs[i].click(); }"
-        headElement.AppendChild(scriptElement)
-        WebBrowser1.Document.InvokeScript("sayHello")
+        'Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
+        'Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
+        'Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
+        'element.text = "javascript:var inputs = document.getElementsByClassName('_1pu2'); 
+        '                    for(var i=0;i<inputs.length;i++) { inputs[i].click(); }"
+        'headElement.AppendChild(scriptElement)
+        'WebBrowser1.Document.InvokeScript("sayHello")
+
+
+
+        Dim myLink =
+            (
+                From T In WebBrowser1.Document.GetElementsByTagName("a").Cast(Of HtmlElement)()
+                Where T.InnerText = "Alle auswählen"
+            ).FirstOrDefault
+        If myLink IsNot Nothing Then
+            myLink.InvokeMember("Click")
+            Beep()
+        Else
+            MessageBox.Show("Not found")
+        End If
+
+        For Each h As HtmlElement In WebBrowser1.Document.GetElementsByTagName("span")
+            If Not Object.ReferenceEquals(h.GetAttribute("className"), Nothing) AndAlso h.GetAttribute("className").Equals("_fe1") Then
+                Label4.Text = "Ausgewählt: " & h.InnerText
+                Exit For
+            End If
+        Next
+
+
+
+
+
+
+
+
+
     End Sub
 
     Private Sub InviteBt_Click(sender As Object, e As EventArgs) Handles InviteBt.Click
-        If TextBox1.Text = "READY" Then
 
-            clickOnTeilen()
-            runJSTimer.Start()
-            Label3.Text = "10"
-            Timer2.Start()
-
-        Else
-
-            MsgBox("Die Seite wurde noch nicht geladen!")
-        End If
     End Sub
 
     Public Sub runJSToConfirm()
@@ -213,25 +238,31 @@ Public Class Form1
     End Sub
 
     Public Sub clickOnTeilen()
+
         WebBrowser1.Document.GetElementById("u_0_11").InvokeMember("click")
         'Threading.Thread.Sleep(500)
         SendKeys.Send("{ENTER}")
+
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Anmelden.Click
-        login_facebook()
-        redirectURLTimer.Start()
+
+
+
 
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         redirectURLTimer.Start()
-        Label3.Text = "10"
+        Label3.Text = "30"
+        Label4.Text = "Ausgewählt: 0"
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 8")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 2")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 1")
-        TextBox2.Text = ""
-        TextBox3.Text = ""
+        LoginForm1.UsernameTextBox.Text = ""
+        LoginForm1.PasswordTextBox.Text = ""
+        LoginForm1.benutzername = ""
+        LoginForm1.passwort = ""
         redirectURLTimer.Start()
     End Sub
 
@@ -261,5 +292,50 @@ Public Class Form1
             runJSToConfirm()
             Beep()
         End If
+    End Sub
+
+    Private Sub ClickOnAllFriendsTimer_Tick(sender As Object, e As EventArgs) Handles ClickOnAllFriendsTimer.Tick
+
+        Dim myLink =
+            (
+                From T In WebBrowser1.Document.GetElementsByTagName("a").Cast(Of HtmlElement)()
+                Where T.InnerText = "Alle Freunde"
+            ).FirstOrDefault
+        If myLink IsNot Nothing Then
+            myLink.InvokeMember("Click")
+            Beep()
+        Else
+            MessageBox.Show("Not found")
+        End If
+
+
+
+        ClickOnAllFriendsTimer.Stop()
+    End Sub
+
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        MsgBox(LoginForm1.benutzername.ToString & LoginForm1.passwort.ToString)
+
+
+
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        LoginForm1.Show()
+    End Sub
+
+    Private Sub MainTimer_Tick(sender As Object, e As EventArgs) Handles MainTimer.Tick
+        If TextBox1.Text = "READY" Then
+
+            clickOnTeilen()
+            'ClickOnAllFriendsTimer.Start()
+
+            runJSTimer.Start()
+
+            Label3.Text = "30"
+            Timer2.Start()
+
+        End If
+        MainTimer.Stop()
     End Sub
 End Class

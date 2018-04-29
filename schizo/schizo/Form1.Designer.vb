@@ -28,27 +28,27 @@ Partial Class Form1
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.InviteBt = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.Anmelden = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.runJSTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.redirectURLTimer = New System.Windows.Forms.Timer(Me.components)
         Me.runJSToConfirmTimer = New System.Windows.Forms.Timer(Me.components)
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ClickOnAllFriendsTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.MainTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'WebBrowser1
         '
-        Me.WebBrowser1.Location = New System.Drawing.Point(269, 4)
+        Me.WebBrowser1.Location = New System.Drawing.Point(512, 4)
         Me.WebBrowser1.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Size = New System.Drawing.Size(812, 552)
+        Me.WebBrowser1.Size = New System.Drawing.Size(569, 552)
         Me.WebBrowser1.TabIndex = 0
         Me.WebBrowser1.Visible = False
         '
@@ -58,19 +58,20 @@ Partial Class Form1
         'InviteBt
         '
         Me.InviteBt.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.InviteBt.Location = New System.Drawing.Point(12, 4)
+        Me.InviteBt.Location = New System.Drawing.Point(12, 110)
         Me.InviteBt.Name = "InviteBt"
         Me.InviteBt.Size = New System.Drawing.Size(85, 29)
         Me.InviteBt.TabIndex = 1
         Me.InviteBt.Text = "Invite"
         Me.InviteBt.UseVisualStyleBackColor = True
+        Me.InviteBt.Visible = False
         '
         'TextBox1
         '
         Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBox1.ForeColor = System.Drawing.Color.Red
-        Me.TextBox1.Location = New System.Drawing.Point(103, 4)
+        Me.TextBox1.Location = New System.Drawing.Point(12, 4)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ReadOnly = True
         Me.TextBox1.Size = New System.Drawing.Size(124, 29)
@@ -78,34 +79,20 @@ Partial Class Form1
         Me.TextBox1.Text = "NOT READY"
         Me.TextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'TextBox2
-        '
-        Me.TextBox2.Location = New System.Drawing.Point(12, 87)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(145, 20)
-        Me.TextBox2.TabIndex = 4
-        '
-        'TextBox3
-        '
-        Me.TextBox3.Location = New System.Drawing.Point(12, 129)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.TextBox3.Size = New System.Drawing.Size(145, 20)
-        Me.TextBox3.TabIndex = 5
-        '
         'Anmelden
         '
         Me.Anmelden.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.Anmelden.Location = New System.Drawing.Point(12, 39)
+        Me.Anmelden.Location = New System.Drawing.Point(12, 145)
         Me.Anmelden.Name = "Anmelden"
         Me.Anmelden.Size = New System.Drawing.Size(85, 29)
         Me.Anmelden.TabIndex = 6
         Me.Anmelden.Text = "Anmelden"
         Me.Anmelden.UseVisualStyleBackColor = True
+        Me.Anmelden.Visible = False
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(103, 39)
+        Me.Button3.Location = New System.Drawing.Point(12, 39)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(85, 29)
         Me.Button3.TabIndex = 7
@@ -114,25 +101,7 @@ Partial Class Form1
         '
         'runJSTimer
         '
-        Me.runJSTimer.Interval = 3000
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(9, 71)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(35, 13)
-        Me.Label1.TabIndex = 8
-        Me.Label1.Text = "Email:"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(9, 113)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(53, 13)
-        Me.Label2.TabIndex = 9
-        Me.Label2.Text = "Passwort:"
+        Me.runJSTimer.Interval = 5000
         '
         'redirectURLTimer
         '
@@ -140,16 +109,17 @@ Partial Class Form1
         '
         'runJSToConfirmTimer
         '
-        Me.runJSToConfirmTimer.Interval = 3000
+        Me.runJSToConfirmTimer.Interval = 4000
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(194, 47)
+        Me.Label3.ForeColor = System.Drawing.SystemColors.ControlLight
+        Me.Label3.Location = New System.Drawing.Point(9, 543)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(19, 13)
         Me.Label3.TabIndex = 11
-        Me.Label3.Text = "10"
+        Me.Label3.Text = "30"
         '
         'Timer2
         '
@@ -157,14 +127,41 @@ Partial Class Form1
         '
         'PictureBox1
         '
-        Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Right
+        Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(233, 0)
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(853, 559)
+        Me.PictureBox1.Size = New System.Drawing.Size(1086, 559)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 12
         Me.PictureBox1.TabStop = False
+        '
+        'ClickOnAllFriendsTimer
+        '
+        Me.ClickOnAllFriendsTimer.Interval = 4000
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(431, 28)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 13
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.Visible = False
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(142, 9)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(74, 13)
+        Me.Label4.TabIndex = 14
+        Me.Label4.Text = "Ausgewählt: 0"
+        '
+        'MainTimer
+        '
+        Me.MainTimer.Interval = 6000
         '
         'Form1
         '
@@ -172,17 +169,15 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.ClientSize = New System.Drawing.Size(1086, 559)
-        Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Anmelden)
-        Me.Controls.Add(Me.TextBox3)
-        Me.Controls.Add(Me.TextBox2)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.InviteBt)
         Me.Controls.Add(Me.WebBrowser1)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Name = "Form1"
         Me.Text = "Schizo"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -195,16 +190,16 @@ Partial Class Form1
     Friend WithEvents Timer1 As Timer
     Friend WithEvents InviteBt As Button
     Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents TextBox2 As TextBox
-    Friend WithEvents TextBox3 As TextBox
     Friend WithEvents Anmelden As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents runJSTimer As Timer
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
     Friend WithEvents redirectURLTimer As Timer
     Friend WithEvents runJSToConfirmTimer As Timer
     Friend WithEvents Label3 As Label
     Friend WithEvents Timer2 As Timer
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents ClickOnAllFriendsTimer As Timer
+    Friend WithEvents Button1 As Button
+    Friend WithEvents Label4 As Label
+    Friend WithEvents MainTimer As Timer
 End Class
