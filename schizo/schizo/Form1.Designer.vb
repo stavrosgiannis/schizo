@@ -50,7 +50,6 @@ Partial Class Form1
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.Size = New System.Drawing.Size(569, 552)
         Me.WebBrowser1.TabIndex = 0
-        Me.WebBrowser1.Visible = False
         '
         'Timer1
         '
