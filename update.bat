@@ -1,8 +1,8 @@
 @echo off
-taskkill /f /im WindowsApp2.exe
+taskkill /f /im schizo.exe
 TIMEOUT 2
-del "WindowsApp2.exe"
+del "schizo.exe"
 TIMEOUT 2
-ren "update.exe" "WindowsApp2.exe"
+ren "update.exe" "schizo.exe"
 TIMEOUT 2
-start /d "%cd%" WindowsApp2.exe
+start /d "%cd%" schizo.exe
