@@ -41,6 +41,9 @@ Partial Class Form1
         Me.Label4 = New System.Windows.Forms.Label()
         Me.MainTimer = New System.Windows.Forms.Timer(Me.components)
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.ListBox1 = New System.Windows.Forms.ListBox()
+        Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -51,7 +54,6 @@ Partial Class Form1
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.Size = New System.Drawing.Size(538, 552)
         Me.WebBrowser1.TabIndex = 0
-        Me.WebBrowser1.Visible = False
         '
         'Timer1
         '
@@ -65,6 +67,7 @@ Partial Class Form1
         Me.InviteBt.TabIndex = 1
         Me.InviteBt.Text = "Invite"
         Me.InviteBt.UseVisualStyleBackColor = True
+        Me.InviteBt.Visible = False
         '
         'TextBox1
         '
@@ -88,6 +91,7 @@ Partial Class Form1
         Me.Anmelden.TabIndex = 6
         Me.Anmelden.Text = "Anmelden"
         Me.Anmelden.UseVisualStyleBackColor = True
+        Me.Anmelden.Visible = False
         '
         'Button3
         '
@@ -168,6 +172,29 @@ Partial Class Form1
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(1062, 13)
         Me.ProgressBar1.TabIndex = 15
+        Me.ProgressBar1.Visible = False
+        '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(191, 118)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 23)
+        Me.Button2.TabIndex = 16
+        Me.Button2.Text = "Button2"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'ListBox1
+        '
+        Me.ListBox1.FormattingEnabled = True
+        Me.ListBox1.Location = New System.Drawing.Point(215, 318)
+        Me.ListBox1.Name = "ListBox1"
+        Me.ListBox1.Size = New System.Drawing.Size(120, 95)
+        Me.ListBox1.TabIndex = 17
+        '
+        'Timer3
+        '
+        Me.Timer3.Enabled = True
+        Me.Timer3.Interval = 500
         '
         'Form1
         '
@@ -175,6 +202,8 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.ClientSize = New System.Drawing.Size(1086, 559)
+        Me.Controls.Add(Me.ListBox1)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Button1)
@@ -210,4 +239,7 @@ Partial Class Form1
     Friend WithEvents Label4 As Label
     Friend WithEvents MainTimer As Timer
     Friend WithEvents ProgressBar1 As ProgressBar
+    Friend WithEvents Button2 As Button
+    Friend WithEvents ListBox1 As ListBox
+    Friend WithEvents Timer3 As Timer
 End Class

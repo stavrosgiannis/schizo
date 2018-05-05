@@ -161,16 +161,28 @@ Public Class Form1
     End Enum
 
     Dim urlINI As String
+
+    Public Function testnetwork()
+        If My.Computer.Network.IsAvailable Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Try
+
             If My.Computer.FileSystem.FileExists(Application.StartupPath & "\update.bat") Then
                 File.Delete(Application.StartupPath & "\update.bat")
             ElseIf My.Computer.FileSystem.FileExists(Application.StartupPath & "\update.exe") Then
                 File.Delete(Application.StartupPath & "\update.exe")
             End If
             'Initializing frameworks
-            queryNewVersion()
+            If testnetwork() = True Then
+                queryNewVersion()
+            End If
 
             pswaHeight = Screen.PrimaryScreen.WorkingArea.Height
             pswaWidth = Screen.PrimaryScreen.WorkingArea.Width
@@ -179,8 +191,9 @@ Public Class Form1
 
             If My.Computer.FileSystem.FileExists(Application.StartupPath & "\config.ini") Then
                 urlINI = IniReadValue("EVENTS", "URL")
-                WebBrowser1.Navigate(urlINI)
+                WebBrowser1.Navigate("m.facebook.com")
             Else
+                MsgBox("Konnte die config.ini nicht auslesen!")
                 Application.Exit()
             End If
 
@@ -377,6 +390,64 @@ Public Class Form1
 
     End Sub
 
+    Public Function checkForSaveDialog()
+        Try
+            If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
+
+
+                WebBrowser1.Navigate("m.facebook.com/login/save-device/cancel/?flow=interstitial_nux&amp;nux_source=regular_login")
+
+                Timer3.Stop()
+                Return True
+
+
+            End If
+            Return False
+        Catch ex As Exception
+
+        End Try
+    End Function
+    Public Sub AllinOne()
+        mobileFBlogin()
+
+    End Sub
+    Public Function mobileFBlogin()
+        Try
+            If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
+
+
+                For Each element As HtmlElement In WebBrowser1.Document.All
+                    If element.Name <> Nothing Then
+                        ListBox1.Items.Add(element.Name)
+                    End If
+                    If InStr(element.Name, "pass") Then
+                        'Nun Value auslesen
+                        element.SetAttribute("value", LoginForm1.passwort)
+
+                    End If
+                    If InStr(element.Name, "email") Then
+                        'Nun Value auslesen
+                        element.SetAttribute("value", LoginForm1.benutzername)
+
+                    End If
+                    If InStr(element.Name, "login") Then
+                        'Nun Value auslesen
+                        element.InvokeMember("click")
+
+                    End If
+
+
+                Next
+
+
+                Return False
+
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Function
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Anmelden.Click
         If TextBox1.Text = "READY" Then
 
@@ -395,7 +466,6 @@ Public Class Form1
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        redirectURLTimer.Start()
         Label3.Text = "30"
         Label4.Text = "Ausgewählt: 0"
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 8")
@@ -405,8 +475,7 @@ Public Class Form1
         LoginForm1.PasswordTextBox.Text = ""
         LoginForm1.benutzername = ""
         LoginForm1.passwort = ""
-        redirectURLTimer.Start()
-        MainTimer.Stop()
+        WebBrowser1.Navigate("m.facebook.com")
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles runJSTimer.Tick
@@ -491,5 +560,20 @@ Public Class Form1
     Private Sub WC_DownloadFileCompleted(sender As Object, e As AsyncCompletedEventArgs) Handles WC.DownloadFileCompleted
         ProgressBar1.Visible = False
         extractbatchfile()
+    End Sub
+
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
+        mobileFBlogin()
+    End Sub
+
+    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
+        If WebBrowser1.Url <> Nothing Then
+            If WebBrowser1.Url.ToString.Contains("save-device") Then
+
+                checkForSaveDialog()
+
+            End If
+        End If
+
     End Sub
 End Class
