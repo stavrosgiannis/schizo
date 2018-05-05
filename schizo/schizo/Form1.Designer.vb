@@ -45,11 +45,12 @@ Partial Class Form1
         '
         'WebBrowser1
         '
-        Me.WebBrowser1.Location = New System.Drawing.Point(512, 4)
+        Me.WebBrowser1.Location = New System.Drawing.Point(543, 4)
         Me.WebBrowser1.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Size = New System.Drawing.Size(569, 552)
+        Me.WebBrowser1.Size = New System.Drawing.Size(538, 552)
         Me.WebBrowser1.TabIndex = 0
+        Me.WebBrowser1.Visible = False
         '
         'Timer1
         '
@@ -63,7 +64,6 @@ Partial Class Form1
         Me.InviteBt.TabIndex = 1
         Me.InviteBt.Text = "Invite"
         Me.InviteBt.UseVisualStyleBackColor = True
-        Me.InviteBt.Visible = False
         '
         'TextBox1
         '
@@ -87,7 +87,6 @@ Partial Class Form1
         Me.Anmelden.TabIndex = 6
         Me.Anmelden.Text = "Anmelden"
         Me.Anmelden.UseVisualStyleBackColor = True
-        Me.Anmelden.Visible = False
         '
         'Button3
         '

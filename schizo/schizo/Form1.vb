@@ -1,5 +1,7 @@
 ﻿Imports mshtml
 Imports System.Text
+Imports System.Net
+Imports System.IO
 Public Class Form1
     Dim pswaHeight As Object
     Dim pswaWidth As Object
@@ -44,6 +46,107 @@ Public Class Form1
     End Function
 #End Region
 
+#Region "Error Logger"
+    '*************************************************************
+    'NAME:          WriteToErrorLog
+    'PURPOSE:       Open or create an error log and submit error message
+    'PARAMETERS:    msg - message to be written to error file
+    '               stkTrace - stack trace from error message
+    '               title - title of the error file entry
+    'RETURNS:       Nothing
+    '*************************************************************
+    Public Sub WriteToErrorLog(ByVal msg As String,
+           ByVal stkTrace As String, ByVal title As String)
+
+        'check and make the directory if necessary; this is set to look in 
+        'the Application folder, you may wish to place the error log in 
+        'another Location depending upon the user's role and write access to 
+        'different areas of the file system
+        If Not System.IO.Directory.Exists(Application.StartupPath &
+    "\Errors\") Then
+            System.IO.Directory.CreateDirectory(Application.StartupPath &
+            "\Errors\")
+        End If
+
+        'check the file
+        Dim fs As FileStream = New FileStream(Application.StartupPath &
+        "\Errors\errlog.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite)
+        Dim s As StreamWriter = New StreamWriter(fs)
+        s.Close()
+        fs.Close()
+
+        'log it
+        Dim fs1 As FileStream = New FileStream(Application.StartupPath &
+        "\Errors\errlog.txt", FileMode.Append, FileAccess.Write)
+        Dim s1 As StreamWriter = New StreamWriter(fs1)
+        s1.Write("Title: " & title & vbCrLf)
+        s1.Write("Message: " & msg & vbCrLf)
+        s1.Write("StackTrace: " & stkTrace & vbCrLf)
+        s1.Write("Date/Time: " & DateTime.Now.ToString() & vbCrLf)
+        s1.Write("================================================" & vbCrLf)
+        s1.Close()
+        fs1.Close()
+
+    End Sub
+#End Region
+
+#Region "searchForUpdate"
+    Dim WithEvents WC As New WebClient
+    Dim urlini2 As String = "https://raw.githubusercontent.com/stavrosgiannis/schizo/master/config.ini"
+    Dim urlexe As String = "https://raw.githubusercontent.com/stavrosgiannis/schizo/master/update.exe"
+    Public Sub queryNewVersion()
+
+
+        If My.Computer.FileSystem.FileExists(_inipath) = False Then
+            My.Computer.Network.DownloadFile(urlini2, _inipath)
+        Else
+            My.Computer.FileSystem.DeleteFile(_inipath, FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            My.Computer.Network.DownloadFile(urlini2, _inipath)
+        End If
+
+        ReadUpdateFiles()
+
+    End Sub
+
+    Public Sub downloadUpdate()
+        urlexe = IniReadValue("update", "urlexe")
+
+        If My.Computer.FileSystem.FileExists(Application.StartupPath & "\update.exe") Then
+            My.Computer.FileSystem.DeleteFile(Application.StartupPath & "\update.exe", FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
+            WC.DownloadFileAsync(New Uri(urlexe), Application.StartupPath & "\update.exe")
+
+        Else
+            WC.DownloadFileAsync(New Uri(urlexe), Application.StartupPath & "\update.exe")
+
+        End If
+
+
+
+    End Sub
+
+    Public Sub extractbatchfile()
+
+        My.Computer.Network.DownloadFile("https://raw.githubusercontent.com/stavrosgiannis/schizo/master/update.bat", Application.StartupPath & "\update.bat")
+        Process.Start(Application.StartupPath & "\update.bat")
+    End Sub
+
+    Public Sub ReadUpdateFiles()
+        If My.Computer.FileSystem.FileExists(_inipath) Then
+            Dim iniversion As String = IniReadValue("update", "version")
+            If iniversion <= Application.ProductVersion Then
+
+            Else
+                Me.Enabled = False
+                downloadUpdate()
+
+            End If
+        End If
+    End Sub
+
+
+#End Region
+
+
     Private Enum Exec
         OLECMDID_OPTICAL_ZOOM = 63
     End Enum
@@ -57,6 +160,21 @@ Public Class Form1
 
     Dim urlINI As String
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        Try
+            If My.Computer.FileSystem.FileExists(Application.StartupPath & "\update.bat") Then
+                File.Delete(Application.StartupPath & "\update.bat")
+            End If
+            'Initializing frameworks
+            queryNewVersion()
+
+
+
+        Catch ex As Exception
+            WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
+            MsgBox("Oops! Looks like something went wrong..", MsgBoxStyle.Critical)
+            Application.Exit()
+        End Try
 
         pswaHeight = Screen.PrimaryScreen.WorkingArea.Height
         pswaWidth = Screen.PrimaryScreen.WorkingArea.Width
@@ -220,7 +338,14 @@ Public Class Form1
     End Sub
 
     Private Sub InviteBt_Click(sender As Object, e As EventArgs) Handles InviteBt.Click
+        If TextBox1.Text = "READY" Then
 
+            clickOnTeilen()
+            'ClickOnAllFriendsTimer.Start()
+
+
+
+        End If
     End Sub
 
     Public Sub runJSToConfirm()
@@ -239,14 +364,27 @@ Public Class Form1
 
     Public Sub clickOnTeilen()
 
+        'WebBrowser1.Document.GetElementById("u_0_11").InvokeMember("click")
+
         WebBrowser1.Document.GetElementById("u_0_11").InvokeMember("click")
+
         'Threading.Thread.Sleep(500)
         SendKeys.Send("{ENTER}")
 
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Anmelden.Click
+        If TextBox1.Text = "READY" Then
 
+            clickOnTeilen()
+            'ClickOnAllFriendsTimer.Start()
+
+            runJSTimer.Start()
+
+            Label3.Text = "30"
+            Timer2.Start()
+
+        End If
 
 
 
@@ -264,6 +402,7 @@ Public Class Form1
         LoginForm1.benutzername = ""
         LoginForm1.passwort = ""
         redirectURLTimer.Start()
+        MainTimer.Stop()
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles runJSTimer.Tick
@@ -337,5 +476,9 @@ Public Class Form1
 
         End If
         MainTimer.Stop()
+    End Sub
+
+    Private Sub WC_DownloadDataCompleted(sender As Object, e As DownloadDataCompletedEventArgs) Handles WC.DownloadDataCompleted
+        extractbatchfile()
     End Sub
 End Class

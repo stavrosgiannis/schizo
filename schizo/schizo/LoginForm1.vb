@@ -20,7 +20,7 @@ Public Class LoginForm1
         Form1.MainTimer.Start()
         UsernameTextBox.Text = ""
         PasswordTextBox.Text = ""
-
+        Form1.MainTimer.Start()
     End Sub
 
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
