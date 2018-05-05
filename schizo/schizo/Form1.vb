@@ -2,6 +2,8 @@
 Imports System.Text
 Imports System.Net
 Imports System.IO
+Imports System.ComponentModel
+
 Public Class Form1
     Dim pswaHeight As Object
     Dim pswaWidth As Object
@@ -164,11 +166,23 @@ Public Class Form1
         Try
             If My.Computer.FileSystem.FileExists(Application.StartupPath & "\update.bat") Then
                 File.Delete(Application.StartupPath & "\update.bat")
+            ElseIf My.Computer.FileSystem.FileExists(Application.StartupPath & "\update.exe") Then
+                File.Delete(Application.StartupPath & "\update.exe")
             End If
             'Initializing frameworks
             queryNewVersion()
 
+            pswaHeight = Screen.PrimaryScreen.WorkingArea.Height
+            pswaWidth = Screen.PrimaryScreen.WorkingArea.Width
+            pswaHeightInt = CInt(pswaHeight)
+            pswaWidthInt = CInt(pswaWidth)
 
+            If My.Computer.FileSystem.FileExists(Application.StartupPath & "\config.ini") Then
+                urlINI = IniReadValue("EVENTS", "URL")
+                WebBrowser1.Navigate(urlINI)
+            Else
+                Application.Exit()
+            End If
 
         Catch ex As Exception
             WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
@@ -176,17 +190,7 @@ Public Class Form1
             Application.Exit()
         End Try
 
-        pswaHeight = Screen.PrimaryScreen.WorkingArea.Height
-        pswaWidth = Screen.PrimaryScreen.WorkingArea.Width
-        pswaHeightInt = CInt(pswaHeight)
-        pswaWidthInt = CInt(pswaWidth)
 
-        If My.Computer.FileSystem.FileExists(Application.StartupPath & "\config.ini") Then
-            urlINI = IniReadValue("EVENTS", "URL")
-            WebBrowser1.Navigate(urlINI)
-        Else
-            Application.Exit()
-        End If
     End Sub
 
     Public Sub login_facebook()
@@ -478,7 +482,14 @@ Public Class Form1
         MainTimer.Stop()
     End Sub
 
-    Private Sub WC_DownloadDataCompleted(sender As Object, e As DownloadDataCompletedEventArgs) Handles WC.DownloadDataCompleted
+    Private Sub WC_DownloadProgressChanged(sender As Object, e As DownloadProgressChangedEventArgs) Handles WC.DownloadProgressChanged
+        ProgressBar1.Visible = True
+        TextBox1.Visible = True
+        ProgressBar1.Value = e.ProgressPercentage
+    End Sub
+
+    Private Sub WC_DownloadFileCompleted(sender As Object, e As AsyncCompletedEventArgs) Handles WC.DownloadFileCompleted
+        ProgressBar1.Visible = False
         extractbatchfile()
     End Sub
 End Class

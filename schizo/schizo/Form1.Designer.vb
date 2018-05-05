@@ -40,6 +40,7 @@ Partial Class Form1
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.MainTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -113,7 +114,7 @@ Partial Class Form1
         '
         Me.Label3.AutoSize = True
         Me.Label3.ForeColor = System.Drawing.SystemColors.ControlLight
-        Me.Label3.Location = New System.Drawing.Point(9, 543)
+        Me.Label3.Location = New System.Drawing.Point(9, 522)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(19, 13)
         Me.Label3.TabIndex = 11
@@ -161,12 +162,20 @@ Partial Class Form1
         '
         Me.MainTimer.Interval = 6000
         '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(12, 543)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(1062, 13)
+        Me.ProgressBar1.TabIndex = 15
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.ClientSize = New System.Drawing.Size(1086, 559)
+        Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label3)
@@ -200,4 +209,5 @@ Partial Class Form1
     Friend WithEvents Button1 As Button
     Friend WithEvents Label4 As Label
     Friend WithEvents MainTimer As Timer
+    Friend WithEvents ProgressBar1 As ProgressBar
 End Class
