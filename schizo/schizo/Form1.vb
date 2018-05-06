@@ -220,7 +220,7 @@ Public Class Form1
     Private Sub WebBrowser1_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
         'Timer1.Start()
         TextBox1.Text = "READY"
-
+        Label1.Text = WebBrowser1.Url.ToString
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -397,14 +397,15 @@ Public Class Form1
 
                 WebBrowser1.Navigate("m.facebook.com/login/save-device/cancel/?flow=interstitial_nux&amp;nux_source=regular_login")
 
-                Timer3.Stop()
+                CheckForSaveDialogTimer.Stop()
+                Timer3.Start()
                 Return True
 
 
             End If
             Return False
         Catch ex As Exception
-
+            MsgBox(ex.Message)
         End Try
     End Function
     Public Sub AllinOne()
@@ -439,8 +440,10 @@ Public Class Form1
 
                 Next
 
+                CheckLoginTimer.Start()
 
-                Return False
+
+
 
             End If
         Catch ex As Exception
@@ -464,8 +467,60 @@ Public Class Form1
 
 
     End Sub
+    Private Function GetImageUrl() As String
+        If (WebBrowser1.Document IsNot Nothing) Then
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+
+
+            Dim Urls As String
+
+            For Each ImgElement As HtmlElement In WebBrowser1.Document.Images
+                If ImgElement.GetAttribute("alt").Contains(GetUserInfo) Then
+                    Urls = ImgElement.GetAttribute("src")
+
+
+                End If
+
+            Next
+
+            Return False
+        End If
+    End Function
+
+    Public Function GetUserInfo()
+        Try
+            If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
+
+
+
+                For Each curElement As HtmlElement In WebBrowser1.Document.GetElementsByTagName("a")
+                    If curElement <> Nothing Then
+                        If curElement.GetAttribute("class").Contains("gz ha") Then
+                            Return curElement.InnerText
+                        End If
+
+                        If curElement.InnerHtml <> Nothing Then
+                            ListBox1.Items.Add(curElement.OuterHtml)
+                        End If
+
+
+                    End If
+
+
+
+                Next
+
+
+
+
+
+                Return False
+            End If
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Function
+    Public Sub reset()
         Label3.Text = "30"
         Label4.Text = "Ausgewählt: 0"
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 8")
@@ -475,7 +530,10 @@ Public Class Form1
         LoginForm1.PasswordTextBox.Text = ""
         LoginForm1.benutzername = ""
         LoginForm1.passwort = ""
-        WebBrowser1.Navigate("m.facebook.com")
+        redirectURLTimer.Start()
+    End Sub
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        reset()
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles runJSTimer.Tick
@@ -484,7 +542,7 @@ Public Class Form1
     End Sub
 
     Private Sub redirectURLTimer_Tick(sender As Object, e As EventArgs) Handles redirectURLTimer.Tick
-        WebBrowser1.Navigate(urlINI)
+        WebBrowser1.Navigate("m.facebook.com")
         redirectURLTimer.Stop()
     End Sub
 
@@ -563,10 +621,10 @@ Public Class Form1
     End Sub
 
     Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
-        mobileFBlogin()
+        findInviteButton()
     End Sub
 
-    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
+    Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles CheckForSaveDialogTimer.Tick
         If WebBrowser1.Url <> Nothing Then
             If WebBrowser1.Url.ToString.Contains("save-device") Then
 
@@ -575,5 +633,139 @@ Public Class Form1
             End If
         End If
 
+    End Sub
+
+    Private Sub Timer3_Tick_1(sender As Object, e As EventArgs) Handles Timer3.Tick
+        If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
+            WebBrowser1.Navigate(urlINI)
+            Timer3.Stop()
+        End If
+    End Sub
+
+    Public Function findInviteButton()
+        If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
+            If WebBrowser1.Url.ToString.Contains("events") Then
+                For Each element As HtmlElement In WebBrowser1.Document.All
+
+                    If element.GetAttribute("href").Contains("friendselect.php") Then
+                        'Nun Value auslesen
+                        element.InvokeMember("click")
+
+                    End If
+                Next
+
+                Return False
+            End If
+        End If
+    End Function
+
+    Public Function listallfriends()
+        If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
+            Dim myLink =
+           (
+               From T In WebBrowser1.Document.GetElementsByTagName("a").Cast(Of HtmlElement)()
+               Where T.InnerText = "Freund/in einladen"
+           ).FirstOrDefault
+            If myLink IsNot Nothing Then
+                myLink.InvokeMember("Click")
+                Beep()
+            Else
+                MessageBox.Show("Not found")
+            End If
+        End If
+    End Function
+
+    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+
+        System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 8")
+        System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 2")
+        System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 1")
+
+    End Sub
+
+    Private Sub CheckLoginTimer_Tick(sender As Object, e As EventArgs) Handles CheckLoginTimer.Tick
+
+        If WebBrowser1.Url.ToString.Contains("login/?email=") = False Then
+                CheckLoginTimer.Stop()
+                MsgBox("Logged in")
+
+            Else
+                CheckLoginTimer.Stop()
+                MsgBox("Email oder Passwort ist falsch")
+
+            End If
+
+
+
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        listallfriends()
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
+            Dim myLink =
+          (
+              From T In WebBrowser1.Document.GetElementsByTagName("a").Cast(Of HtmlElement)()
+              Where T.InnerText = "Alle Freunde"
+          ).FirstOrDefault
+            If myLink IsNot Nothing Then
+                myLink.InvokeMember("Click")
+                Beep()
+            Else
+                MessageBox.Show("Not found")
+            End If
+        End If
+    End Sub
+    Dim anzahl As Integer = 0
+    Dim page As String = "1"
+    Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
+        If WebBrowser1.Url.ToString.Contains("friendinvite") Then
+            If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
+                Dim myLink =
+               (
+                   From T In WebBrowser1.Document.GetElementsByTagName("a").Cast(Of HtmlElement)()
+                   Where T.InnerText = "Weitere Personen hinzufügen"
+               ).FirstOrDefault
+                If myLink IsNot Nothing Then
+                    myLink.InvokeMember("Click")
+
+                Else
+                    MessageBox.Show("Not found")
+                End If
+            End If
+        ElseIf WebBrowser1.Url.ToString.Contains("friendselect") Then
+
+            If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
+                Dim myLink =
+           (
+               From T In WebBrowser1.Document.GetElementsByTagName("a").Cast(Of HtmlElement)()
+               Where T.InnerText = "Freund/in einladen"
+           ).FirstOrDefault
+                If myLink IsNot Nothing Then
+                    myLink.InvokeMember("Click")
+                    anzahl = anzahl + 1
+                    Label4.Text = "Ausgewählt: " & anzahl
+
+                Else
+                    Dim myLink2 =
+          (
+              From T In WebBrowser1.Document.GetElementsByTagName("a").Cast(Of HtmlElement)()
+              Where T.InnerText = page
+          ).FirstOrDefault
+                    If myLink2 IsNot Nothing Then
+                        myLink2.InvokeMember("Click")
+                        page = page + 1
+                    Else
+                        Timer4.Stop()
+                    End If
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Timer4.Start()
     End Sub
 End Class

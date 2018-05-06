@@ -43,7 +43,14 @@ Partial Class Form1
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.ListBox1 = New System.Windows.Forms.ListBox()
+        Me.CheckForSaveDialogTimer = New System.Windows.Forms.Timer(Me.components)
         Me.Timer3 = New System.Windows.Forms.Timer(Me.components)
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.CheckLoginTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.Button5 = New System.Windows.Forms.Button()
+        Me.Timer4 = New System.Windows.Forms.Timer(Me.components)
+        Me.Button6 = New System.Windows.Forms.Button()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -176,7 +183,7 @@ Partial Class Form1
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(191, 118)
+        Me.Button2.Location = New System.Drawing.Point(37, 236)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 23)
         Me.Button2.TabIndex = 16
@@ -186,15 +193,64 @@ Partial Class Form1
         'ListBox1
         '
         Me.ListBox1.FormattingEnabled = True
-        Me.ListBox1.Location = New System.Drawing.Point(215, 318)
+        Me.ListBox1.Location = New System.Drawing.Point(26, 318)
         Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(120, 95)
+        Me.ListBox1.Size = New System.Drawing.Size(511, 95)
         Me.ListBox1.TabIndex = 17
+        Me.ListBox1.Visible = False
+        '
+        'CheckForSaveDialogTimer
+        '
+        Me.CheckForSaveDialogTimer.Enabled = True
+        Me.CheckForSaveDialogTimer.Interval = 500
         '
         'Timer3
         '
-        Me.Timer3.Enabled = True
         Me.Timer3.Interval = 500
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(132, 145)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(39, 13)
+        Me.Label1.TabIndex = 18
+        Me.Label1.Text = "Label1"
+        '
+        'CheckLoginTimer
+        '
+        Me.CheckLoginTimer.Interval = 3000
+        '
+        'Button4
+        '
+        Me.Button4.Location = New System.Drawing.Point(223, 74)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(75, 23)
+        Me.Button4.TabIndex = 19
+        Me.Button4.Text = "Button4"
+        Me.Button4.UseVisualStyleBackColor = True
+        '
+        'Button5
+        '
+        Me.Button5.Location = New System.Drawing.Point(337, 110)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(75, 23)
+        Me.Button5.TabIndex = 20
+        Me.Button5.Text = "Button5"
+        Me.Button5.UseVisualStyleBackColor = True
+        '
+        'Timer4
+        '
+        Me.Timer4.Interval = 1000
+        '
+        'Button6
+        '
+        Me.Button6.Location = New System.Drawing.Point(404, 205)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(75, 23)
+        Me.Button6.TabIndex = 21
+        Me.Button6.Text = "Button6"
+        Me.Button6.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -202,6 +258,10 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.ClientSize = New System.Drawing.Size(1086, 559)
+        Me.Controls.Add(Me.Button6)
+        Me.Controls.Add(Me.Button5)
+        Me.Controls.Add(Me.Button4)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.ListBox1)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.ProgressBar1)
@@ -215,7 +275,7 @@ Partial Class Form1
         Me.Controls.Add(Me.WebBrowser1)
         Me.Controls.Add(Me.PictureBox1)
         Me.Name = "Form1"
-        Me.Text = "Schizo"
+        Me.Text = "SCHIZO-EVENTS"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -241,5 +301,12 @@ Partial Class Form1
     Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents Button2 As Button
     Friend WithEvents ListBox1 As ListBox
+    Friend WithEvents CheckForSaveDialogTimer As Timer
     Friend WithEvents Timer3 As Timer
+    Friend WithEvents Label1 As Label
+    Friend WithEvents CheckLoginTimer As Timer
+    Friend WithEvents Button4 As Button
+    Friend WithEvents Button5 As Button
+    Friend WithEvents Timer4 As Timer
+    Friend WithEvents Button6 As Button
 End Class
