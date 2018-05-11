@@ -15,13 +15,14 @@ Public Class LoginForm1
         passwort = PasswordTextBox.Text
         'MsgBox(benutzername & passwort)
         Me.Hide()
-        'Form1.login_facebook()
-        'Form1.redirectURLTimer.Start()
-        'Form1.MainTimer.Start()
-        Form1.AllinOne()
-        UsernameTextBox.Text = ""
-        PasswordTextBox.Text = ""
-        'Form1.MainTimer.Start()
+        ''Form1.login_facebook()
+        ''Form1.redirectURLTimer.Start()
+        ''Form1.MainTimer.Start()
+        'Form1.AllinOne()
+        'UsernameTextBox.Text = ""
+        'PasswordTextBox.Text = ""
+        ''Form1.MainTimer.Start()
+        tempForm.DoEvents()
     End Sub
 
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click

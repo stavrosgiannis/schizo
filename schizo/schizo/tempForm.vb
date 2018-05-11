@@ -44,4 +44,24 @@ Public Class tempForm
             Application.Exit()
         End Try
     End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        LoginForm1.Show()
+    End Sub
+
+    Public Sub DoEvents()
+
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles CheckLoginTimer.Tick
+        If WebBrowser1.Url.ToString.Contains("login/?email=") = False Then
+            CheckLoginTimer.Stop()
+            MsgBox("Logged in")
+
+        Else
+            CheckLoginTimer.Stop()
+            MsgBox("Email oder Passwort ist falsch")
+
+        End If
+    End Sub
 End Class
