@@ -93,6 +93,7 @@ Public Class Form1
 #End Region
 
 #Region "searchForUpdate"
+    Public urlINI As String
     Dim WithEvents WC As New WebClient
     Dim urlini2 As String = "https://raw.githubusercontent.com/stavrosgiannis/schizo/master/config.ini"
     Dim urlexe As String = "https://raw.githubusercontent.com/stavrosgiannis/schizo/master/update.exe"
@@ -160,7 +161,7 @@ Public Class Form1
         OLECMDEXECOPT_SHOWHELP = 3
     End Enum
 
-    Dim urlINI As String
+
 
     Public Function testnetwork()
         If My.Computer.Network.IsAvailable Then
