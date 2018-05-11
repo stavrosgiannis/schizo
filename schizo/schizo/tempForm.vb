@@ -9,6 +9,7 @@ Public Class tempForm
     Private Sub tempForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
 
+
         Try
 
             If My.Computer.FileSystem.FileExists(Application.StartupPath & "\update.bat") Then
@@ -55,18 +56,24 @@ Public Class tempForm
     End Sub
 
     Public Function login_facebook()
-        If LoginForm1.passwort IsNot Nothing And LoginForm1.benutzername IsNot Nothing Then
-            WebBrowser1.Document.GetElementById("Email").SetAttribute("value", LoginForm1.benutzername)
-            WebBrowser1.Document.GetElementById("pass").SetAttribute("value", LoginForm1.passwort)
-            WebBrowser1.Document.GetElementById("loginbutton").InvokeMember("click")
-            Return True
-        Else
-            MsgBox("Bitte Melde dich erst an! oder drücke RESET", MsgBoxStyle.Information)
+
+
+        Try
+            If LoginForm1.passwort IsNot Nothing And LoginForm1.benutzername IsNot Nothing Then
+                WebBrowser1.Document.GetElementById("Email").SetAttribute("value", LoginForm1.benutzername)
+                WebBrowser1.Document.GetElementById("pass").SetAttribute("value", LoginForm1.passwort)
+                WebBrowser1.Document.GetElementById("loginbutton").InvokeMember("click")
+                Return True
+            Else
+                Return False
+            End If
+        Catch ex As Exception
+            Form1.WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
+            MsgBox("Bitte Melde dich erst an oder drücke RESET", MsgBoxStyle.Information)
             Return False
-        End If
-
-
+        End Try
     End Function
+
 
     Public Function runJS()
         Try
@@ -137,8 +144,8 @@ Public Class tempForm
 
     Public Sub reset()
         WebBrowser1.Visible = False
-        Label1.Text = ""
-        Label2.Text = ""
+        Label1.Text = "Unknown"
+        Label2.Text = "Unknown"
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 8")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 2")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 1")
@@ -189,10 +196,111 @@ Public Class tempForm
         End If
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        If runJS() = True Then
+    Public Function runJSToConfirm()
+        Try
+            Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
+            Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
+            Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
+            element.text = "javascript:var inputs = document.getElementsByClassName('layerConfirm'); 
+                            var rake = inputs[0]; rake.click(); "
+            headElement.AppendChild(scriptElement)
+            WebBrowser1.Document.InvokeScript("sayHello")
+            Return True
 
-            MsgBox("Es wurden alle verfügbaren Freunde eingeladen!")
+        Catch ex As Exception
+            Form1.WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
+            MsgBox("Oops! Looks like something went wrong..", MsgBoxStyle.Critical)
+            Return False
+        End Try
+        Return False
+    End Function
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        If findScrollID() = True Then
+            ScrollDown.Start()
+        Else
+            MsgBox("Couldnt find Scrollbar!")
         End If
+
+    End Sub
+
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
+        Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
+        Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
+        element.text = "javascript:Function scrollToBottom(){
+      Bottom = document.body.scrollHeight;
+      current = window.innerHeight + document.body.scrollTop;
+      If ((Bottom - current) > 0) Then{
+        window.scrollTo(0, Bottom);
+        setTimeout( 'scrollToBottom()', 1000 );
+      }
+    };
+    scrollToBottom();"
+        headElement.AppendChild(scriptElement)
+        WebBrowser1.Document.InvokeScript("sayHello")
+    End Sub
+    Dim i As Integer = 0
+    Private Sub ScrollDown_Tick(sender As Object, e As EventArgs) Handles ScrollDown.Tick
+        Try
+            If i = 10 Then
+                ScrollDown.Stop()
+                If runJS() = True Then
+                    If runJSToConfirm() = True Then
+                        MsgBox("Es wurden alle verfügbaren Freunde eingeladen!")
+                    End If
+                End If
+                Else
+                i += 1
+            End If
+            Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
+            Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
+            Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
+            element.text = "javascript:var objDiv = document.getElementById('" & foundid & "');
+            objDiv.scrollTop = objDiv.scrollHeight;"
+            headElement.AppendChild(scriptElement)
+
+
+
+        Catch ex As Exception
+            Form1.WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
+            MsgBox("Oops! Looks like something went wrong..", MsgBoxStyle.Critical)
+            ScrollDown.Stop()
+        End Try
+
+
+    End Sub
+    Public foundid As String
+    Public Function findScrollID()
+        Dim collect = WebBrowser1.Document.GetElementsByTagName("div")
+
+        Dim i As Int32
+        For i = 0 To collect.Count - 1
+            If WebBrowser1.Document.GetElementsByTagName("div")(i).Id = Nothing Then
+            Else
+                'MsgBox(WebBrowser1.Document.GetElementsByTagName("div")(i).Id.ToString)
+                If WebBrowser1.Document.GetElementsByTagName("div")(i).Id.Contains("js_") Then
+                    If WebBrowser1.Document.GetElementsByTagName("div")(i).GetAttribute("className").Contains("uiScrollableAreaWrap scrollable") Then
+                        Debug.Print(WebBrowser1.Document.GetElementsByTagName("div")(i).Id.ToString & " [" & WebBrowser1.Document.GetElementsByTagName("div")(i).GetAttribute("className").ToString & "]")
+                        If collect(i).OuterHtml.Contains("event_invite") Then
+                            Debug.Print("Found it!" & collect(i).Id.ToString)
+                            foundid = collect(i).Id.ToString()
+                            Return True
+                        End If
+                    End If
+                End If
+            End If
+        Next
+        Return False
+    End Function
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+
+
     End Sub
 End Class
