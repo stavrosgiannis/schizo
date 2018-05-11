@@ -23,6 +23,7 @@ Public Class LoginForm1
         'PasswordTextBox.Text = ""
         ''Form1.MainTimer.Start()
         tempForm.DoEvents()
+
     End Sub
 
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
