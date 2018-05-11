@@ -257,16 +257,16 @@ Public Class tempForm
                     End If
                 End If
                 Else
+                Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
+                Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
+                Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
+                element.text = "javascript:var objDiv = document.getElementById('" & foundid & "');
+            objDiv.scrollTop = objDiv.scrollHeight;"
+                headElement.AppendChild(scriptElement)
+
+
                 i += 1
             End If
-            Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
-            Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
-            Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
-            element.text = "javascript:var objDiv = document.getElementById('" & foundid & "');
-            objDiv.scrollTop = objDiv.scrollHeight;"
-            headElement.AppendChild(scriptElement)
-
-
 
         Catch ex As Exception
             Form1.WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
