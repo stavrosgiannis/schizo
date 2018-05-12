@@ -221,6 +221,7 @@ Public Class tempForm
     End Function
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        WebBrowser1.Visible = False
         If findScrollID() = True Then
             ScrollDown.Start()
         Else
