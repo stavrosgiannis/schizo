@@ -611,13 +611,13 @@ Public Class Form1
     End Sub
 
     Private Sub WC_DownloadProgressChanged(sender As Object, e As DownloadProgressChangedEventArgs) Handles WC.DownloadProgressChanged
-        ProgressBar1.Visible = True
-        TextBox1.Visible = True
-        ProgressBar1.Value = e.ProgressPercentage
+        tempForm.ToolStripProgressBar1.Visible = True
+        'TextBox1.Visible = True
+        tempForm.ToolStripProgressBar1.Value = e.ProgressPercentage
     End Sub
 
     Private Sub WC_DownloadFileCompleted(sender As Object, e As AsyncCompletedEventArgs) Handles WC.DownloadFileCompleted
-        ProgressBar1.Visible = False
+        tempForm.ToolStripProgressBar1.Visible = False
         extractbatchfile()
     End Sub
 

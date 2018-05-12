@@ -8,7 +8,7 @@ Imports System.ComponentModel
 Public Class tempForm
     Private Sub tempForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
-
+        ToolStripStatusLabel1.Text = "Version: " & Application.ProductVersion
 
         Try
 
@@ -112,11 +112,11 @@ Public Class tempForm
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles CheckLoginTimer.Tick
         If WebBrowser1.Url.ToString.Contains("login.php?") = False Then
             CheckLoginTimer.Stop()
-            Label2.Text = "Erfolgreich eingeloggt!"
+            ToolStripStatusLabel3.Text = "Erfolgreich eingeloggt!"
 
         Else
             CheckLoginTimer.Stop()
-            Label2.Text = "Email oder Passwort ist falsch!"
+            ToolStripStatusLabel3.Text = "Email oder Passwort ist falsch!"
 
         End If
     End Sub
@@ -126,26 +126,31 @@ Public Class tempForm
             TextBox1.Text = WebBrowser1.Url.OriginalString
         End If
         If WebBrowser1.ReadyState = WebBrowserReadyState.Loading Then
-            Label1.Text = "Loading"
+            ToolStripStatusLabel2.ForeColor = Color.Red
+            ToolStripStatusLabel2.Text = "Loading"
         End If
         If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
-            Label1.Text = "Complete"
+            ToolStripStatusLabel2.Text = "Complete"
+            ToolStripStatusLabel2.ForeColor = Color.Green
         End If
         If WebBrowser1.ReadyState = WebBrowserReadyState.Interactive Then
-            Label1.Text = "Interactive"
+            ToolStripStatusLabel2.Text = "Interactive"
+            ToolStripStatusLabel2.ForeColor = Color.Red
         End If
         If WebBrowser1.ReadyState = WebBrowserReadyState.Loaded Then
-            Label1.Text = "Loaded"
+            ToolStripStatusLabel2.Text = "Loaded"
+            ToolStripStatusLabel2.ForeColor = Color.Red
         End If
         If WebBrowser1.ReadyState = WebBrowserReadyState.Uninitialized Then
-            Label1.Text = "Uninitialized"
+            ToolStripStatusLabel2.Text = "Uninitialized"
+            ToolStripStatusLabel2.ForeColor = Color.Red
         End If
     End Sub
 
     Public Sub reset()
         WebBrowser1.Visible = False
-        Label1.Text = "Unknown"
-        Label2.Text = "Unknown"
+        ToolStripStatusLabel2.Text = "Unknown"
+        ToolStripStatusLabel3.Text = "Unknown"
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 8")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 2")
         System.Diagnostics.Process.Start("rundll32.exe", "InetCpl.cpl,ClearMyTracksByProcess 1")
