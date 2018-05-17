@@ -74,6 +74,17 @@ Public Class tempForm
         End Try
     End Function
 
+    Public Function GetSelectedCounter()
+        Try
+            If findSelectedCounterID() = True Then
+                ToolStripStatusLabel4.Text = "Ausgewählt: " & foundid2
+            Else
+                ToolStripStatusLabel4.Text = "Ausgewählt: ERROR"
+            End If
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
 
     Public Function runJS()
         Try
@@ -219,9 +230,10 @@ Public Class tempForm
         End Try
         Return False
     End Function
-
+    Dim i As Integer = 0
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        WebBrowser1.Visible = False
+        'WebBrowser1.Visible = False
+        i = 0
         If findScrollID() = True Then
             ScrollDown.Start()
         Else
@@ -252,17 +264,18 @@ Public Class tempForm
         headElement.AppendChild(scriptElement)
         WebBrowser1.Document.InvokeScript("sayHello")
     End Sub
-    Dim i As Integer = 0
+
     Private Sub ScrollDown_Tick(sender As Object, e As EventArgs) Handles ScrollDown.Tick
         Try
             If i = 10 Then
                 ScrollDown.Stop()
                 If runJS() = True Then
-                    If runJSToConfirm() = True Then
-                        MsgBox("Es wurden alle verfügbaren Freunde eingeladen!")
-                    End If
+                    GetSelectedCounter()
+                    'If runJSToConfirm() = True Then
+                    MsgBox("Es wurden alle verfügbaren Freunde eingeladen!")
+                    'End If
                 End If
-                Else
+            Else
                 Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
                 Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
                 Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
@@ -305,8 +318,37 @@ Public Class tempForm
         Next
         Return False
     End Function
+    Dim foundid2 As String
+    Public Function findSelectedCounterID()
+        Dim collect = WebBrowser1.Document.GetElementsByTagName("span")
+
+        Dim i As Int32
+        For i = 0 To collect.Count - 1
+
+
+            'MsgBox(WebBrowser1.Document.GetElementsByTagName("div")(i).Id.ToString)
+            If WebBrowser1.Document.GetElementsByTagName("span")(i).GetAttribute("className").Contains("_fe") Then
+
+                'Debug.Print(WebBrowser1.Document.GetElementsByTagName("span")(i).Id.ToString & " [" & WebBrowser1.Document.GetElementsByTagName("span")(i).GetAttribute("className").ToString & "]")
+
+
+                foundid2 = collect(i).OuterText.ToString
+
+                Debug.Print("Found it!" & collect(i).OuterText.ToString)
+
+                Return True
+
+            End If
+        Next
+        Return False
+    End Function
+
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
 
+
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs)
 
     End Sub
 End Class
