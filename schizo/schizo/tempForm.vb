@@ -1,9 +1,5 @@
-﻿
-Imports mshtml
-Imports System.Text
-Imports System.Net
+﻿Imports mshtml
 Imports System.IO
-Imports System.ComponentModel
 
 Public Class tempForm
     Private Sub tempForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
