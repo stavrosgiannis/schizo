@@ -54,19 +54,18 @@ Partial Class tempForm
         Me.WebBrowser1.Location = New System.Drawing.Point(0, 48)
         Me.WebBrowser1.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Size = New System.Drawing.Size(800, 379)
+        Me.WebBrowser1.Size = New System.Drawing.Size(913, 529)
         Me.WebBrowser1.TabIndex = 0
         Me.WebBrowser1.Visible = False
         '
         'PictureBox1
         '
-        Me.PictureBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(0, -2)
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(800, 452)
+        Me.PictureBox1.Size = New System.Drawing.Size(913, 589)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 1
         Me.PictureBox1.TabStop = False
@@ -81,7 +80,7 @@ Partial Class tempForm
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(168, 6)
+        Me.TextBox1.Location = New System.Drawing.Point(168, 65)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ReadOnly = True
         Me.TextBox1.Size = New System.Drawing.Size(384, 20)
@@ -91,7 +90,7 @@ Partial Class tempForm
         'Button1
         '
         Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button1.Location = New System.Drawing.Point(690, 3)
+        Me.Button1.Location = New System.Drawing.Point(803, 5)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(98, 37)
         Me.Button1.TabIndex = 5
@@ -109,11 +108,15 @@ Partial Class tempForm
         'Button2
         '
         Me.Button2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button2.Location = New System.Drawing.Point(586, 3)
+        Me.Button2.FlatAppearance.BorderSize = 10
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.Location = New System.Drawing.Point(699, 5)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(98, 37)
         Me.Button2.TabIndex = 6
         Me.Button2.Text = "Run JS"
+        Me.Button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.Button2.UseVisualStyleBackColor = True
         '
         'Button3
@@ -143,10 +146,10 @@ Partial Class tempForm
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripStatusLabel2, Me.ToolStripStatusLabel3, Me.ToolStripProgressBar1, Me.ToolStripStatusLabel4})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 428)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 567)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
-        Me.StatusStrip1.Size = New System.Drawing.Size(800, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(913, 22)
         Me.StatusStrip1.TabIndex = 10
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -188,7 +191,7 @@ Partial Class tempForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(913, 589)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
@@ -197,6 +200,7 @@ Partial Class tempForm
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.WebBrowser1)
         Me.Controls.Add(Me.PictureBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Name = "tempForm"
         Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

@@ -1,13 +1,14 @@
 Public Class LoginForm1
 
-    ' TODO: Code zum Durchführen der benutzerdefinierten Authentifizierung mithilfe des angegebenen Benutzernamens und des Kennworts hinzufügen 
-    ' (Siehe https://go.microsoft.com/fwlink/?LinkId=35339).  
-    ' Der benutzerdefinierte Prinzipal kann anschließend wie folgt an den Prinzipal des aktuellen Threads angefügt werden: 
+    ' TODO: Code zum Durchführen der benutzerdefinierten Authentifizierung mithilfe des angegebenen Benutzernamens und des Kennworts hinzufügen
+    ' (Siehe https://go.microsoft.com/fwlink/?LinkId=35339).
+    ' Der benutzerdefinierte Prinzipal kann anschließend wie folgt an den Prinzipal des aktuellen Threads angefügt werden:
     '     My.User.CurrentPrincipal = CustomPrincipal
-    ' wobei CustomPrincipal die IPrincipal-Implementierung ist, die für die Durchführung der Authentifizierung verwendet wird. 
+    ' wobei CustomPrincipal die IPrincipal-Implementierung ist, die für die Durchführung der Authentifizierung verwendet wird.
     ' Anschließend gibt My.User Identitätsinformationen zurück, die in das CustomPrincipal-Objekt gekapselt sind,
     ' z. B. den Benutzernamen, den Anzeigenamen usw.
     Public Property benutzername As String
+
     Public Property passwort As String
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
@@ -33,4 +34,5 @@ Public Class LoginForm1
     Private Sub LoginForm1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
+
 End Class

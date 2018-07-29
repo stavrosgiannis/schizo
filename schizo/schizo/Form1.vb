@@ -1,8 +1,8 @@
-﻿Imports mshtml
-Imports System.Text
-Imports System.Net
+﻿Imports System.ComponentModel
 Imports System.IO
-Imports System.ComponentModel
+Imports System.Net
+Imports System.Text
+Imports MSHTML
 
 Public Class Form1
     Dim pswaHeight As Object
@@ -11,6 +11,7 @@ Public Class Form1
     Dim pswaWidthInt As Integer
 
 #Region "ini. API"
+
     ''' <summary>
     ''' Create a New INI file to store or load data
     ''' </summary>
@@ -46,9 +47,11 @@ Public Class Form1
         Dim i As Integer = GetPrivateProfileStringA(Section, Key, "", temp, 255, Me._inipath)
         Return temp.ToString
     End Function
+
 #End Region
 
 #Region "Error Logger"
+
     '*************************************************************
     'NAME:          WriteToErrorLog
     'PURPOSE:       Open or create an error log and submit error message
@@ -60,9 +63,9 @@ Public Class Form1
     Public Sub WriteToErrorLog(ByVal msg As String,
            ByVal stkTrace As String, ByVal title As String)
 
-        'check and make the directory if necessary; this is set to look in 
-        'the Application folder, you may wish to place the error log in 
-        'another Location depending upon the user's role and write access to 
+        'check and make the directory if necessary; this is set to look in
+        'the Application folder, you may wish to place the error log in
+        'another Location depending upon the user's role and write access to
         'different areas of the file system
         If Not System.IO.Directory.Exists(Application.StartupPath &
     "\Errors\") Then
@@ -90,15 +93,17 @@ Public Class Form1
         fs1.Close()
 
     End Sub
+
 #End Region
 
 #Region "searchForUpdate"
+
     Public urlINI As String
     Dim WithEvents WC As New WebClient
     Dim urlini2 As String = "https://raw.githubusercontent.com/stavrosgiannis/schizo/master/config.ini"
     Dim urlexe As String = "https://raw.githubusercontent.com/stavrosgiannis/schizo/master/update.exe"
-    Public Sub queryNewVersion()
 
+    Public Sub queryNewVersion()
 
         If My.Computer.FileSystem.FileExists(_inipath) = False Then
             My.Computer.Network.DownloadFile(urlini2, _inipath)
@@ -117,13 +122,10 @@ Public Class Form1
         If My.Computer.FileSystem.FileExists(Application.StartupPath & "\update.exe") Then
             My.Computer.FileSystem.DeleteFile(Application.StartupPath & "\update.exe", FileIO.UIOption.OnlyErrorDialogs, FileIO.RecycleOption.DeletePermanently)
             WC.DownloadFileAsync(New Uri(urlexe), Application.StartupPath & "\update.exe")
-
         Else
             WC.DownloadFileAsync(New Uri(urlexe), Application.StartupPath & "\update.exe")
 
         End If
-
-
 
     End Sub
 
@@ -137,7 +139,6 @@ Public Class Form1
         If My.Computer.FileSystem.FileExists(_inipath) Then
             Dim iniversion As String = IniReadValue("update", "version")
             If iniversion <= Application.ProductVersion Then
-
             Else
                 Me.Enabled = False
                 downloadUpdate()
@@ -146,9 +147,7 @@ Public Class Form1
         End If
     End Sub
 
-
 #End Region
-
 
     Private Enum Exec
         OLECMDID_OPTICAL_ZOOM = 63
@@ -160,8 +159,6 @@ Public Class Form1
         OLECMDEXECOPT_DONTPROMPTUSER = 2
         OLECMDEXECOPT_SHOWHELP = 3
     End Enum
-
-
 
     Public Function testnetwork()
         If My.Computer.Network.IsAvailable Then
@@ -197,13 +194,11 @@ Public Class Form1
                 MsgBox("Konnte die config.ini nicht auslesen!")
                 Application.Exit()
             End If
-
         Catch ex As Exception
             WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
             MsgBox("Oops! Looks like something went wrong..", MsgBoxStyle.Critical)
             Application.Exit()
         End Try
-
 
     End Sub
 
@@ -225,7 +220,6 @@ Public Class Form1
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-
 
         If WebBrowser1.Width > Math.Round(pswaWidthInt / 5.6) And WebBrowser1.Width < Math.Round(pswaWidthInt / 2.97) Or WebBrowser1.Height > Math.Round(pswaHeightInt / 3.0) And WebBrowser1.Height < Math.Round(pswaHeightInt / 2.4) Then
             Try
@@ -319,12 +313,10 @@ Public Class Form1
         'Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
         'Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
         'Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
-        'element.text = "javascript:var inputs = document.getElementsByClassName('_1pu2'); 
+        'element.text = "javascript:var inputs = document.getElementsByClassName('_1pu2');
         '                    for(var i=0;i<inputs.length;i++) { inputs[i].click(); }"
         'headElement.AppendChild(scriptElement)
         'WebBrowser1.Document.InvokeScript("sayHello")
-
-
 
         Dim myLink =
             (
@@ -345,14 +337,6 @@ Public Class Form1
             End If
         Next
 
-
-
-
-
-
-
-
-
     End Sub
 
     Private Sub InviteBt_Click(sender As Object, e As EventArgs) Handles InviteBt.Click
@@ -361,8 +345,6 @@ Public Class Form1
             clickOnTeilen()
             'ClickOnAllFriendsTimer.Start()
 
-
-
         End If
     End Sub
 
@@ -370,7 +352,7 @@ Public Class Form1
         Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
         Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
         Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
-        element.text = "javascript:var inputs = document.getElementsByClassName('layerConfirm'); 
+        element.text = "javascript:var inputs = document.getElementsByClassName('layerConfirm');
                             var rake = inputs[0]; rake.click(); "
         headElement.AppendChild(scriptElement)
         WebBrowser1.Document.InvokeScript("sayHello")
@@ -395,13 +377,11 @@ Public Class Form1
         Try
             If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
 
-
                 WebBrowser1.Navigate("m.facebook.com/login/save-device/cancel/?flow=interstitial_nux&amp;nux_source=regular_login")
 
                 CheckForSaveDialogTimer.Stop()
                 Timer3.Start()
                 Return True
-
 
             End If
             Return False
@@ -409,14 +389,15 @@ Public Class Form1
             MsgBox(ex.Message)
         End Try
     End Function
+
     Public Sub AllinOne()
         mobileFBlogin()
 
     End Sub
+
     Public Function mobileFBlogin()
         Try
             If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
-
 
                 For Each element As HtmlElement In WebBrowser1.Document.All
                     If element.Name <> Nothing Then
@@ -438,13 +419,9 @@ Public Class Form1
 
                     End If
 
-
                 Next
 
                 CheckLoginTimer.Start()
-
-
-
 
             End If
         Catch ex As Exception
@@ -465,20 +442,16 @@ Public Class Form1
 
         End If
 
-
-
     End Sub
+
     Private Function GetImageUrl() As String
         If (WebBrowser1.Document IsNot Nothing) Then
-
-
 
             Dim Urls As String
 
             For Each ImgElement As HtmlElement In WebBrowser1.Document.Images
                 If ImgElement.GetAttribute("alt").Contains(GetUserInfo) Then
                     Urls = ImgElement.GetAttribute("src")
-
 
                 End If
 
@@ -492,8 +465,6 @@ Public Class Form1
         Try
             If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
 
-
-
                 For Each curElement As HtmlElement In WebBrowser1.Document.GetElementsByTagName("a")
                     If curElement <> Nothing Then
                         If curElement.GetAttribute("class").Contains("gz ha") Then
@@ -504,16 +475,9 @@ Public Class Form1
                             ListBox1.Items.Add(curElement.OuterHtml)
                         End If
 
-
                     End If
 
-
-
                 Next
-
-
-
-
 
                 Return False
             End If
@@ -521,6 +485,7 @@ Public Class Form1
             MsgBox(ex.ToString)
         End Try
     End Function
+
     Public Sub reset()
         Label3.Text = "30"
         Label4.Text = "Ausgewählt: 0"
@@ -533,6 +498,7 @@ Public Class Form1
         LoginForm1.passwort = ""
         redirectURLTimer.Start()
     End Sub
+
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         reset()
     End Sub
@@ -579,15 +545,11 @@ Public Class Form1
             MessageBox.Show("Not found")
         End If
 
-
-
         ClickOnAllFriendsTimer.Stop()
     End Sub
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         MsgBox(LoginForm1.benutzername.ToString & LoginForm1.passwort.ToString)
-
-
 
     End Sub
 
@@ -687,16 +649,13 @@ Public Class Form1
     Private Sub CheckLoginTimer_Tick(sender As Object, e As EventArgs) Handles CheckLoginTimer.Tick
 
         If WebBrowser1.Url.ToString.Contains("login/?email=") = False Then
-                CheckLoginTimer.Stop()
-                MsgBox("Logged in")
+            CheckLoginTimer.Stop()
+            MsgBox("Logged in")
+        Else
+            CheckLoginTimer.Stop()
+            MsgBox("Email oder Passwort ist falsch")
 
-            Else
-                CheckLoginTimer.Stop()
-                MsgBox("Email oder Passwort ist falsch")
-
-            End If
-
-
+        End If
 
     End Sub
 
@@ -719,8 +678,10 @@ Public Class Form1
             End If
         End If
     End Sub
+
     Dim anzahl As Integer = 0
     Dim page As String = "1"
+
     Private Sub Timer4_Tick(sender As Object, e As EventArgs) Handles Timer4.Tick
         If WebBrowser1.Url.ToString.Contains("friendinvite") Then
             If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
@@ -731,7 +692,6 @@ Public Class Form1
                ).FirstOrDefault
                 If myLink IsNot Nothing Then
                     myLink.InvokeMember("Click")
-
                 Else
                     MessageBox.Show("Not found")
                 End If
@@ -748,7 +708,6 @@ Public Class Form1
                     myLink.InvokeMember("Click")
                     anzahl = anzahl + 1
                     Label4.Text = "Ausgewählt: " & anzahl
-
                 Else
                     Dim myLink2 =
           (
@@ -769,4 +728,5 @@ Public Class Form1
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         Timer4.Start()
     End Sub
+
 End Class

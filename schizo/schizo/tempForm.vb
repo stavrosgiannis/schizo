@@ -1,8 +1,13 @@
-﻿Imports mshtml
+﻿Imports MSHTML
 Imports System.IO
+Imports MetroSuite
 
 Public Class tempForm
+    Dim rs As New Resizer
+
     Private Sub tempForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        rs.FindAllControls(Me)
+
         Me.WindowState = FormWindowState.Maximized
         ToolStripStatusLabel1.Text = "Version: " & Application.ProductVersion
 
@@ -18,8 +23,6 @@ Public Class tempForm
                 Form1.queryNewVersion()
             End If
 
-
-
             If My.Computer.FileSystem.FileExists(Application.StartupPath & "\config.ini") Then
                 Form1.urlINI = Form1.IniReadValue("EVENTS", "URL")
                 WebBrowser1.Navigate(Form1.urlINI)
@@ -27,7 +30,6 @@ Public Class tempForm
                 MsgBox("Konnte die config.ini nicht auslesen!")
                 Application.Exit()
             End If
-
         Catch ex As Exception
             Form1.WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
             MsgBox("Oops! Looks like something went wrong..", MsgBoxStyle.Critical)
@@ -52,7 +54,6 @@ Public Class tempForm
     End Sub
 
     Public Function login_facebook()
-
 
         Try
             If LoginForm1.passwort IsNot Nothing And LoginForm1.benutzername IsNot Nothing Then
@@ -88,7 +89,7 @@ Public Class tempForm
             Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
             Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
             Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
-            element.text = "javascript:var inputs = document.getElementsByClassName('_1pu2'); 
+            element.text = "javascript:var inputs = document.getElementsByClassName('_1pu2');
                             for(var i=0;i<inputs.length;i++) { inputs[i].click(); }"
             headElement.AppendChild(scriptElement)
             WebBrowser1.Document.InvokeScript("sayHello")
@@ -110,7 +111,6 @@ Public Class tempForm
                 If WebBrowser1.ReadyState = WebBrowserReadyState.Complete Then
                     redirectURLTimer.Start()
 
-
                 End If
             End If
         End If
@@ -120,7 +120,6 @@ Public Class tempForm
         If WebBrowser1.Url.ToString.Contains("login.php?") = False Then
             CheckLoginTimer.Stop()
             ToolStripStatusLabel3.Text = "Erfolgreich eingeloggt!"
-
         Else
             CheckLoginTimer.Stop()
             ToolStripStatusLabel3.Text = "Email oder Passwort ist falsch!"
@@ -213,12 +212,11 @@ Public Class tempForm
             Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
             Dim scriptElement As HtmlElement = WebBrowser1.Document.CreateElement("script")
             Dim element As IHTMLScriptElement = DirectCast(scriptElement.DomElement, IHTMLScriptElement)
-            element.text = "javascript:var inputs = document.getElementsByClassName('layerConfirm'); 
+            element.text = "javascript:var inputs = document.getElementsByClassName('layerConfirm');
                             var rake = inputs[0]; rake.click(); "
             headElement.AppendChild(scriptElement)
             WebBrowser1.Document.InvokeScript("sayHello")
             Return True
-
         Catch ex As Exception
             Form1.WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
             MsgBox("Oops! Looks like something went wrong..", MsgBoxStyle.Critical)
@@ -226,7 +224,9 @@ Public Class tempForm
         End Try
         Return False
     End Function
+
     Dim i As Integer = 0
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         'WebBrowser1.Visible = False
         i = 0
@@ -241,8 +241,6 @@ Public Class tempForm
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs)
 
     End Sub
-
-
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         Dim headElement As HtmlElement = WebBrowser1.Document.GetElementsByTagName("head")(0)
@@ -279,19 +277,18 @@ Public Class tempForm
             objDiv.scrollTop = objDiv.scrollHeight;"
                 headElement.AppendChild(scriptElement)
 
-
                 i += 1
             End If
-
         Catch ex As Exception
             Form1.WriteToErrorLog(ex.Message, ex.StackTrace, "Exception")
             MsgBox("Oops! Looks like something went wrong..", MsgBoxStyle.Critical)
             ScrollDown.Stop()
         End Try
 
-
     End Sub
+
     Public foundid As String
+
     Public Function findScrollID()
         Dim collect = WebBrowser1.Document.GetElementsByTagName("div")
 
@@ -314,19 +311,19 @@ Public Class tempForm
         Next
         Return False
     End Function
+
     Dim foundid2 As String
+
     Public Function findSelectedCounterID()
         Dim collect = WebBrowser1.Document.GetElementsByTagName("span")
 
         Dim i As Int32
         For i = 0 To collect.Count - 1
 
-
             'MsgBox(WebBrowser1.Document.GetElementsByTagName("div")(i).Id.ToString)
             If WebBrowser1.Document.GetElementsByTagName("span")(i).GetAttribute("className").Contains("_fe") Then
 
                 'Debug.Print(WebBrowser1.Document.GetElementsByTagName("span")(i).Id.ToString & " [" & WebBrowser1.Document.GetElementsByTagName("span")(i).GetAttribute("className").ToString & "]")
-
 
                 foundid2 = collect(i).OuterText.ToString
 
@@ -341,10 +338,14 @@ Public Class tempForm
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
 
-
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs)
 
     End Sub
+
+    Private Sub tempForm_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        rs.ResizeAllControls(Me)
+    End Sub
+
 End Class
